@@ -1,0 +1,21 @@
+import express from 'express';
+import { logger } from './middleware/logger';
+import cors from 'cors';
+
+const app = express();
+const PORT = 4000;
+
+app.use(cors()); // allow frontend access
+app.use(express.json());
+app.use(logger); // our custom middleware
+
+// Example route
+app.post('/api/data', (req, res) => {
+  const { message } = req.body;
+  console.log('Received from frontend:', message);
+  res.json({ status: 'success', echo: message });
+});
+
+app.listen(PORT, () => {
+  console.log(`Backend running at http://localhost:${PORT}`);
+});
